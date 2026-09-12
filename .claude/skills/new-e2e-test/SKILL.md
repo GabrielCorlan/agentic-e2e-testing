@@ -1,14 +1,11 @@
 ---
 name: new-e2e-test
-description: Use when adding a new e2e test (Playwright spec or Gherkin/BDD scenario) to this repository, to follow its existing conventions for selectors, env config, and BDD wiring.
+description: Use when adding a new e2e test (a Gherkin/BDD scenario) to this repository, to follow its existing conventions for selectors, env config, tags, and BDD wiring.
 ---
 
 # Adding a new e2e test
 
-Two supported formats — pick based on the task, not both by default:
-
-- **Plain spec**: add a `*.spec.ts` file under `tests/`. Runs automatically across the `chromium`/`firefox`/`webkit` projects.
-- **Gherkin/BDD**: add a scenario to a `features/*.feature` file (new or existing) and its step definitions in `features/steps/*.steps.ts`. Reuse an existing step's exact text instead of writing a near-duplicate.
+All tests in this repo are Gherkin scenarios — there are no plain Playwright specs. Add a scenario to a `features/*.feature` file (new or existing) and its step definitions in `features/steps/*.steps.ts`. Reuse an existing step's exact text instead of writing a near-duplicate.
 
 ## Conventions to follow
 
@@ -16,7 +13,7 @@ Two supported formats — pick based on the task, not both by default:
 - **Base URL**: `playwright.config.ts` sets `baseURL` from `.env`'s `BASE_URL`. Use `page.goto('/relative/path')`, never a hardcoded domain.
 - **Credentials**: `.env` (gitignored) is already loaded into `process.env` by `playwright.config.ts` before tests run. Reference `process.env.TEST_USER` / `process.env.TEST_PASS` directly — no per-file dotenv setup needed. Never hardcode credentials in a test.
 - **BDD step definitions**: register steps with `createBdd()` from `playwright-bdd` (see `features/steps/login.steps.ts`), not `@cucumber/cucumber` directly — this keeps them on Playwright's own runner/fixtures instead of Cucumber's.
-- **BDD tags**: every scenario gets two tags: a unique, sequential ID (`@UITC001`, `@UITC002`, ...; check existing `features/*.feature` files for the highest one in use) and a category tag (`@smoke`, `@regression`, ...). Filter with `npm run test:bdd:tag -- "@UITC001"` or `-- "@smoke"`.
+- **Tags**: every scenario gets two tags: a unique, sequential ID (`@UITC001`, `@UITC002`, ...; check existing `features/*.feature` files for the highest one in use) and a category tag (`@smoke`, `@regression`, ...). Filter with `npm run test:tag -- "@UITC001"` or `-- "@smoke"`.
 
 ## General good practices (apply anywhere, not just this repo)
 
@@ -33,6 +30,5 @@ Two supported formats — pick based on the task, not both by default:
 ## Before considering it done
 
 1. `npx tsc --noEmit` — type-check.
-2. For BDD changes: `npm run test:bdd` (regenerates `.features-gen/` via `bddgen`, then runs the `bdd` project).
-3. For spec changes: `npx playwright test <path-to-file>`.
-4. Run the new test at least twice in a row — a pass on the first run doesn't rule out flakiness (timing-dependent waits, order-dependent state).
+2. `npm run test:tag -- "@<your-new-ID>"` — regenerates `.features-gen/` via `bddgen` and runs just the new scenario.
+3. Run it at least twice in a row — a pass on the first run doesn't rule out flakiness (timing-dependent waits, order-dependent state).

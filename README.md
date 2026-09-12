@@ -1,6 +1,6 @@
 # agentic-e2e-testing
 
-E2E test automation framework built with [Playwright](https://playwright.dev/) and TypeScript.
+E2E test automation framework built with [Playwright](https://playwright.dev/) and TypeScript, using Gherkin/BDD for all test scenarios.
 
 Site under test: [https://practicesoftwaretesting.com/](https://practicesoftwaretesting.com/)
 
@@ -22,37 +22,13 @@ Site under test: [https://practicesoftwaretesting.com/](https://practicesoftware
    | `TEST_USER` | Test account email/username           |
    | `TEST_PASS` | Test account password                 |
 
-## Running tests
-
-```bash
-npm test           # run all tests (also regenerates BDD tests, see below)
-npm run test:ui     # interactive UI mode
-npm run test:headed # run with browser windows visible
-npm run test:debug  # step-through debug mode
-npm run report       # open the last HTML report
-npm run codegen      # record a new test via Playwright Codegen
-```
-
 ## BDD (Cucumber / Gherkin)
 
-Gherkin scenarios live in `features/*.feature`, with their step definitions in
-`features/steps/*.steps.ts`. [playwright-bdd](https://vitalets.github.io/playwright-bdd/)
-compiles them into Playwright tests, so they run with the same runner, fixtures,
-and HTML report as the rest of the suite.
-
-```bash
-npm run test:bdd   # generate + run the BDD scenarios (project "bdd")
-
-npm run test:bdd:tag -- "@UITC001"  # run scenario(s) matching a tag
-npm run test:bdd:tag -- "@smoke"    # run all scenarios in a category
-npm run test:bdd:headed              # run BDD scenarios with the browser window visible
-npm run test:bdd:tag:headed -- "@UITC001"  # run a tag-filtered scenario with the browser window visible
-```
-
-`npm test` also regenerates the BDD tests first (via the `pretest` script), so
-they're included whenever you run the full suite.
-
-### Tagging convention
+All tests are written as Gherkin scenarios in `features/*.feature`, with their
+step definitions in `features/steps/*.steps.ts`.
+[playwright-bdd](https://vitalets.github.io/playwright-bdd/) compiles them into
+Playwright tests, so they run with the same runner, fixtures, and HTML report
+as any other Playwright suite.
 
 Every scenario carries two tags: a unique test-case ID (`@UITC001`, `@UITC002`, ...)
 for traceability, and a category tag (`@smoke`, `@regression`, ...) for grouping:
@@ -61,3 +37,21 @@ for traceability, and a category tag (`@smoke`, `@regression`, ...) for grouping
 @UITC001 @smoke
 Scenario: Successful login with valid credentials
 ```
+
+## Running tests
+
+```bash
+npm test                              # regenerate + run all scenarios, all browsers
+npm run test:tag -- "@UITC001"        # run scenario(s) matching a tag
+npm run test:tag -- "@smoke"          # run all scenarios in a category
+npm run test:headed                    # run with browser windows visible
+npm run test:tag:headed -- "@UITC001"  # tag-filtered + headed
+npm run test:ui                        # interactive UI mode
+npm run test:debug                     # step-through debug mode
+npm run report                          # open the last HTML report
+npm run codegen                         # record a new test via Playwright Codegen
+```
+
+`npm test` (and the other `test:*` scripts) regenerate the Playwright tests
+from the `.feature` files first, so edits to a scenario or step file are
+always picked up.

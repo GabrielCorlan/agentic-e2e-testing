@@ -6,13 +6,11 @@
   "scripts": {
     "pretest": "bddgen",
     "test": "playwright test",
-    "test:bdd": "bddgen && playwright test --project=bdd",
-    "test:bdd:tag": "bddgen && playwright test --project=bdd --grep",
-    "test:bdd:headed": "bddgen && playwright test --project=bdd --headed",
-    "test:bdd:tag:headed": "bddgen && playwright test --project=bdd --headed --grep",
-    "test:ui": "playwright test --ui",
-    "test:headed": "playwright test --headed",
-    "test:debug": "playwright test --debug",
+    "test:tag": "bddgen && playwright test --grep",
+    "test:tag:headed": "bddgen && playwright test --headed --grep",
+    "test:ui": "bddgen && playwright test --ui",
+    "test:headed": "bddgen && playwright test --headed",
+    "test:debug": "bddgen && playwright test --debug",
     "report": "playwright show-report",
     "codegen": "playwright codegen"
   },

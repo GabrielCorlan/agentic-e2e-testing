@@ -13,7 +13,7 @@ dotenv.config({ path: path.resolve(__dirname, '.env') });
  * Generates Playwright tests from Gherkin .feature files.
  * https://vitalets.github.io/playwright-bdd/
  */
-const bddTestDir = defineBddConfig({
+const testDir = defineBddConfig({
   features: 'features/**/*.feature',
   steps: 'features/steps/**/*.ts',
 });
@@ -22,7 +22,7 @@ const bddTestDir = defineBddConfig({
  * See https://playwright.dev/docs/test-configuration.
  */
 export default defineConfig({
-  testDir: './tests',
+  testDir,
   /* Run tests in files in parallel */
   fullyParallel: true,
   /* Fail the build on CI if you accidentally left test.only in the source code. */
@@ -57,12 +57,6 @@ export default defineConfig({
     {
       name: 'webkit',
       use: { ...devices['Desktop Safari'] },
-    },
-
-    {
-      name: 'bdd',
-      testDir: bddTestDir,
-      use: { ...devices['Desktop Chrome'] },
     },
 
     /* Test against mobile viewports. */
