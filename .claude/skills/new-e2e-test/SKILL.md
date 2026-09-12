@@ -16,6 +16,7 @@ Two supported formats — pick based on the task, not both by default:
 - **Base URL**: `playwright.config.ts` sets `baseURL` from `.env`'s `BASE_URL`. Use `page.goto('/relative/path')`, never a hardcoded domain.
 - **Credentials**: `.env` (gitignored) is already loaded into `process.env` by `playwright.config.ts` before tests run. Reference `process.env.TEST_USER` / `process.env.TEST_PASS` directly — no per-file dotenv setup needed. Never hardcode credentials in a test.
 - **BDD step definitions**: register steps with `createBdd()` from `playwright-bdd` (see `features/steps/login.steps.ts`), not `@cucumber/cucumber` directly — this keeps them on Playwright's own runner/fixtures instead of Cucumber's.
+- **BDD tags**: every scenario gets two tags: a unique, sequential ID (`@UITC001`, `@UITC002`, ...; check existing `features/*.feature` files for the highest one in use) and a category tag (`@smoke`, `@regression`, ...). Filter with `npm run test:bdd:tag -- "@UITC001"` or `-- "@smoke"`.
 
 ## Before considering it done
 

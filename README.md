@@ -43,9 +43,20 @@ and HTML report as the rest of the suite.
 ```bash
 npm run test:bdd   # generate + run the BDD scenarios (project "bdd")
 
-npm run test:bdd:name -- "Successful login with valid credentials"  # run one scenario by (partial) name
-npm run test:bdd:headed  # run BDD scenarios with the browser window visible
+npm run test:bdd:tag -- "@UITC001"  # run scenario(s) matching a tag
+npm run test:bdd:tag -- "@smoke"    # run all scenarios in a category
+npm run test:bdd:headed              # run BDD scenarios with the browser window visible
 ```
 
 `npm test` also regenerates the BDD tests first (via the `pretest` script), so
 they're included whenever you run the full suite.
+
+### Tagging convention
+
+Every scenario carries two tags: a unique test-case ID (`@UITC001`, `@UITC002`, ...)
+for traceability, and a category tag (`@smoke`, `@regression`, ...) for grouping:
+
+```gherkin
+@UITC001 @smoke
+Scenario: Successful login with valid credentials
+```
