@@ -10,5 +10,5 @@
     "forceConsistentCasingInFileNames": true,
     "resolveJsonModule": true
   },
-  "include": ["tests/**/*.ts", "playwright.config.ts"]
+  "include": ["features/**/*.ts", "playwright.config.ts"]
 }
