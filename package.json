@@ -9,6 +9,7 @@
     "test:bdd": "bddgen && playwright test --project=bdd",
     "test:bdd:tag": "bddgen && playwright test --project=bdd --grep",
     "test:bdd:headed": "bddgen && playwright test --project=bdd --headed",
+    "test:bdd:tag:headed": "bddgen && playwright test --project=bdd --headed --grep",
     "test:ui": "playwright test --ui",
     "test:headed": "playwright test --headed",
     "test:debug": "playwright test --debug",

@@ -20,6 +20,7 @@ npx playwright test -g "customer can log in"          # run tests matching a tit
 npm run test:bdd            # regenerate + run only the Gherkin scenarios (project "bdd")
 npm run test:bdd:tag -- "@UITC001"  # run BDD scenario(s) matching a tag (ID or category, e.g. "@smoke")
 npm run test:bdd:headed      # run BDD scenarios with the browser window visible
+npm run test:bdd:tag:headed -- "@UITC001"  # tag-filtered + headed
 npm run test:ui              # interactive UI mode
 npm run test:headed          # headed (visible browser)
 npm run test:debug           # Playwright inspector/debug mode

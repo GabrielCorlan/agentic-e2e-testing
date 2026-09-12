@@ -46,6 +46,7 @@ npm run test:bdd   # generate + run the BDD scenarios (project "bdd")
 npm run test:bdd:tag -- "@UITC001"  # run scenario(s) matching a tag
 npm run test:bdd:tag -- "@smoke"    # run all scenarios in a category
 npm run test:bdd:headed              # run BDD scenarios with the browser window visible
+npm run test:bdd:tag:headed -- "@UITC001"  # run a tag-filtered scenario with the browser window visible
 ```
 
 `npm test` also regenerates the BDD tests first (via the `pretest` script), so
