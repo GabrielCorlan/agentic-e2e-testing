@@ -1,4 +1,5 @@
 import { defineConfig, devices } from '@playwright/test';
+import { defineBddConfig } from 'playwright-bdd';
 
 /**
  * Read environment variables from file.
@@ -7,6 +8,15 @@ import { defineConfig, devices } from '@playwright/test';
 import dotenv from 'dotenv';
 import path from 'path';
 dotenv.config({ path: path.resolve(__dirname, '.env') });
+
+/**
+ * Generates Playwright tests from Gherkin .feature files.
+ * https://vitalets.github.io/playwright-bdd/
+ */
+const bddTestDir = defineBddConfig({
+  features: 'features/**/*.feature',
+  steps: 'features/steps/**/*.ts',
+});
 
 /**
  * See https://playwright.dev/docs/test-configuration.
@@ -47,6 +57,12 @@ export default defineConfig({
     {
       name: 'webkit',
       use: { ...devices['Desktop Safari'] },
+    },
+
+    {
+      name: 'bdd',
+      testDir: bddTestDir,
+      use: { ...devices['Desktop Chrome'] },
     },
 
     /* Test against mobile viewports. */

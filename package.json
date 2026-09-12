@@ -4,7 +4,9 @@
   "description": "",
   "main": "index.js",
   "scripts": {
+    "pretest": "bddgen",
     "test": "playwright test",
+    "test:bdd": "bddgen && playwright test --project=bdd",
     "test:ui": "playwright test --ui",
     "test:headed": "playwright test --headed",
     "test:debug": "playwright test --debug",
@@ -24,8 +26,10 @@
   },
   "homepage": "https://github.com/GabrielCorlan/agentic-e2e-testing#readme",
   "devDependencies": {
+    "@cucumber/cucumber": "^13.2.1",
     "@playwright/test": "^1.63.0",
     "@types/node": "^22.20.2",
+    "playwright-bdd": "^9.2.1",
     "typescript": "^7.0.2"
   },
   "dependencies": {
