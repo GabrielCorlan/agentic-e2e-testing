@@ -42,6 +42,8 @@ and HTML report as the rest of the suite.
 
 ```bash
 npm run test:bdd   # generate + run the BDD scenarios (project "bdd")
+
+npm run test:bdd:name -- "Successful login with valid credentials"  # run one scenario by (partial) name
 ```
 
 `npm test` also regenerates the BDD tests first (via the `pretest` script), so

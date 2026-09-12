@@ -7,6 +7,7 @@
     "pretest": "bddgen",
     "test": "playwright test",
     "test:bdd": "bddgen && playwright test --project=bdd",
+    "test:bdd:name": "bddgen && playwright test --project=bdd -g",
     "test:ui": "playwright test --ui",
     "test:headed": "playwright test --headed",
     "test:debug": "playwright test --debug",
