@@ -17,6 +17,7 @@ When a scenario needs a new interaction: check whether an `elements/*.ts` file f
 ## Conventions to follow
 
 - **Selectors**: use the site's `data-test="..."` attributes (e.g. `[data-test="email"]`), never CSS classes or text — this is an Angular app with unstable structural classes. If a `data-test` attribute isn't already known, inspect the live page (e.g. `npx playwright codegen $BASE_URL`) rather than guessing.
+- **Generic element steps take the `data-test` id as a Cucumber Expression parameter**, not hardcoded, so one step definition covers any element of that kind: `When('I click the {string} button', async ({ page }, dataTestId: string) => ...)` matches `And I click the "login-submit" button` in a `.feature` file. Follow this for any new generic action step (click, fill, ...); it doesn't apply to a step that wraps a specific composite/domain action (e.g. `AppHeader`'s sign-in navigation), where the target isn't meant to vary.
 - **Base URL**: `playwright.config.ts` sets `baseURL` from `.env`'s `BASE_URL`. Use `page.goto('/relative/path')`, never a hardcoded domain.
 - **Credentials**: `.env` (gitignored) is already loaded into `process.env` by `playwright.config.ts` before tests run. Reference `process.env.TEST_USER` / `process.env.TEST_PASS` directly — no per-file dotenv setup needed. Never hardcode credentials in a test.
 - **BDD step definitions**: register steps with `createBdd()` from `playwright-bdd` (see `steps/button.steps.ts`), not `@cucumber/cucumber` directly — this keeps them on Playwright's own runner/fixtures instead of Cucumber's.
