@@ -24,8 +24,7 @@ Site under test: [https://practicesoftwaretesting.com/](https://practicesoftware
 
 ## BDD (Cucumber / Gherkin)
 
-All tests are written as Gherkin scenarios in `features/*.feature`, with their
-step definitions in `features/steps/*.steps.ts`.
+All tests are written as Gherkin scenarios in `features/*.feature`.
 [playwright-bdd](https://vitalets.github.io/playwright-bdd/) compiles them into
 Playwright tests, so they run with the same runner, fixtures, and HTML report
 as any other Playwright suite.
@@ -37,6 +36,22 @@ for traceability, and a category tag (`@smoke`, `@regression`, ...) for grouping
 @UITC001 @smoke
 Scenario: Successful login with valid credentials
 ```
+
+### Elements & steps
+
+Step definitions and page interactions are split into two parallel top-level
+folders, one file per HTML tag / component:
+
+- **`elements/*.ts`** — a small class per element type (`button.ts`, `input.ts`,
+  `link.ts`, `app-header.ts`, ...) exposing the actions you can take on it
+  (`.click()`, `.fill()`, ...). These hold no Gherkin wording, only Playwright
+  actions.
+- **`steps/*.steps.ts`** — the `Given`/`When`/`Then` definitions behind the
+  Gherkin sentences, named to match the element file they use (`button.steps.ts`
+  uses `elements/button.ts`, etc.).
+
+A step file is only added once a scenario actually needs it — the pairing is a
+naming convention, not a requirement to pre-create every possible element.
 
 ## Running tests
 

@@ -15,7 +15,7 @@ dotenv.config({ path: path.resolve(__dirname, '.env') });
  */
 const testDir = defineBddConfig({
   features: 'features/**/*.feature',
-  steps: 'features/steps/**/*.ts',
+  steps: 'steps/**/*.ts',
 });
 
 /**
