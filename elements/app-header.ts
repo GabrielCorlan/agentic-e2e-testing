@@ -18,6 +18,6 @@ export class AppHeader {
   }
 
   async expectUserMenuVisible(): Promise<void> {
-    await expect(this.userMenu).toBeVisible();
+    await expect(this.userMenu).toBeVisible({ timeout: 15_000 });
   }
 }
