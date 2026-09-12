@@ -40,16 +40,17 @@ Scenario: Successful login with valid credentials
 
 ## Running tests
 
+Tests run with a visible browser window by default (`headless: false` in
+`playwright.config.ts`).
+
 ```bash
-npm test                              # regenerate + run all scenarios, all browsers
-npm run test:tag -- "@UITC001"        # run scenario(s) matching a tag
-npm run test:tag -- "@smoke"          # run all scenarios in a category
-npm run test:headed                    # run with browser windows visible
-npm run test:tag:headed -- "@UITC001"  # tag-filtered + headed
-npm run test:ui                        # interactive UI mode
-npm run test:debug                     # step-through debug mode
-npm run report                          # open the last HTML report
-npm run codegen                         # record a new test via Playwright Codegen
+npm test                        # regenerate + run all scenarios, all browsers
+npm run test:tag -- "@UITC001"  # run scenario(s) matching a tag
+npm run test:tag -- "@smoke"    # run all scenarios in a category
+npm run test:ui                  # interactive UI mode
+npm run test:debug               # step-through debug mode
+npm run report                    # open the last HTML report
+npm run codegen                   # record a new test via Playwright Codegen
 ```
 
 `npm test` (and the other `test:*` scripts) regenerate the Playwright tests

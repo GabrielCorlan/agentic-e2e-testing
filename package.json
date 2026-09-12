@@ -7,9 +7,7 @@
     "pretest": "bddgen",
     "test": "playwright test",
     "test:tag": "bddgen && playwright test --grep",
-    "test:tag:headed": "bddgen && playwright test --headed --grep",
     "test:ui": "bddgen && playwright test --ui",
-    "test:headed": "bddgen && playwright test --headed",
     "test:debug": "bddgen && playwright test --debug",
     "report": "playwright show-report",
     "codegen": "playwright codegen"
