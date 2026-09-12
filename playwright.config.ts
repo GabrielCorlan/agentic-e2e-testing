@@ -38,8 +38,8 @@ export default defineConfig({
     /* Base URL to use in actions like `await page.goto('')`. */
     baseURL: process.env.BASE_URL,
 
-    /* Run with a visible browser window by default. */
-    headless: false,
+    /* Run with a visible browser window by default; CI has no display, so it always runs headless. */
+    headless: !!process.env.CI,
 
     /* Collect trace when retrying the failed test. See https://playwright.dev/docs/trace-viewer */
     trace: 'on-first-retry',

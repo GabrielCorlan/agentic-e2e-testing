@@ -55,8 +55,8 @@ naming convention, not a requirement to pre-create every possible element.
 
 ## Running tests
 
-Tests run with a visible browser window by default (`headless: false` in
-`playwright.config.ts`).
+Tests run with a visible browser window by default; they run headless
+automatically when `CI` is set (see [CI/CD](#cicd) below).
 
 ```bash
 npm test                        # regenerate + run all scenarios, all browsers
@@ -71,3 +71,20 @@ npm run codegen                   # record a new test via Playwright Codegen
 `npm test` (and the other `test:*` scripts) regenerate the Playwright tests
 from the `.feature` files first, so edits to a scenario or step file are
 always picked up.
+
+## CI/CD
+
+`.github/workflows/tests.yml` runs the full suite on every push to `main` and
+every pull request targeting it: install deps, install Playwright browsers,
+`npm test` (headless, since `CI` is set), then upload the HTML report as an
+artifact.
+
+Add these as **repository secrets** (Settings → Secrets and variables →
+Actions) before the workflow can log in — they're the same values as your
+local `.env`:
+
+| Secret      | Same as `.env`'s |
+| ----------- | ---------------- |
+| `BASE_URL`  | `BASE_URL`       |
+| `TEST_USER` | `TEST_USER`      |
+| `TEST_PASS` | `TEST_PASS`      |
