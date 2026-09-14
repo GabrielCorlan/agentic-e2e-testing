@@ -6,6 +6,17 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 E2E test automation framework for [https://practicesoftwaretesting.com/](https://practicesoftwaretesting.com/) (a public Angular demo/e-commerce site), built with Playwright and TypeScript. All tests are Gherkin scenarios (via playwright-bdd), compiled into and run through Playwright's own test runner/config — there is no separate Cucumber runner.
 
+### Directory map
+
+| Path | Holds |
+|---|---|
+| `features/` | Gherkin `.feature` files (the scenarios) |
+| `src/objects/` | One class per HTML tag/component (the object model) |
+| `src/steps/` | Step definitions, one file per matching object |
+| `.claude/` | Claude Code hooks, agents, skills for this repo |
+| `.github/workflows/` | CI (currently disabled — see Architecture below) |
+| `docs/` | Session handoff notes (`docs/handoff.md`) — not stable rules, see that file for current state |
+
 ## Git branch workflow (check this first, every prompt)
 
 A `UserPromptSubmit` hook (`.claude/hooks/git-branch-status.sh`) injects the
