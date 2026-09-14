@@ -72,12 +72,25 @@ npm run codegen                   # record a new test via Playwright Codegen
 from the `.feature` files first, so edits to a scenario or step file are
 always picked up.
 
+## Allure report
+
+Tests also write raw results to `allure-results/` via
+[allure-playwright](https://github.com/allure-framework/allure-js), alongside
+the built-in Playwright HTML reporter. Generating/viewing the Allure report
+requires a Java runtime (the `allure` CLI is Java-based).
+
+```bash
+npm run allure:serve      # generate a temp report from allure-results/ and open it
+npm run allure:generate   # generate a static report into allure-report/
+npm run allure:open        # open the last generated allure-report/
+```
+
 ## CI/CD
 
 `.github/workflows/tests.yml` runs the full suite on every push to `main` and
 every pull request targeting it: install deps, install Playwright browsers,
-`npm test` (headless, since `CI` is set), then upload the HTML report as an
-artifact.
+`npm test` (headless, since `CI` is set), then upload the HTML report and the
+raw `allure-results/` as artifacts.
 
 Add these as **repository secrets** (Settings → Secrets and variables →
 Actions) before the workflow can log in — they're the same values as your
@@ -88,3 +101,17 @@ local `.env`:
 | `BASE_URL`  | `BASE_URL`       |
 | `TEST_USER` | `TEST_USER`      |
 | `TEST_PASS` | `TEST_PASS`      |
+
+### Known limitation: Cloudflare on the GitHub-hosted runner
+
+The suite tests a real third-party site, and the CI job can fail with the
+account-menu check (`nav-menu`) never appearing even though the login
+steps and the redirect to `/account` succeed. The failure page snapshot
+(printed by the "Print failure page snapshots" step, or in the
+`test-results` artifact) shows the site's Cloudflare bot-check screen
+("Performing security verification") instead of the real app — this is
+Cloudflare challenging GitHub Actions' shared runner IPs, not a bug in the
+tests or the app. It doesn't reproduce locally (a residential IP isn't
+challenged) either headed or headless, so it isn't fixable from Playwright
+config. If a run fails this way, re-run the job — a later run may land on a
+different, unflagged runner IP.

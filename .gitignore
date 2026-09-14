@@ -15,3 +15,7 @@ node_modules/
 
 # graphify skill output/cache
 /graphify-out/
+
+# Allure report output
+/allure-results/
+/allure-report/
