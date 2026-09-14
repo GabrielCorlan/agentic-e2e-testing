@@ -36,7 +36,10 @@ touches `features/`, `src/objects/`, `src/steps/`, or `playwright.config.ts`
 
 1. Run the up-to-3 most recently added/changed `@UITC###`-tagged scenarios
    (`npm run test:tag`), or `npm test` if `src/objects/`/`src/steps/` changed
-   without a new/changed scenario tag. Don't push if any test fails.
+   without a new/changed scenario tag. A failure here doesn't have to block
+   the push — the suite depends on a live third-party site's login, which
+   can fail for reasons unrelated to code (invalid/locked test credentials,
+   Cloudflare, network issues) — but do mention it to the user.
 2. Review the diff using the same criteria as `.claude/agents/test-reviewer.md`
    plus leftover `TODO`/`FIXME` comments and this file's documented
    conventions. Fix concrete issues before pushing.

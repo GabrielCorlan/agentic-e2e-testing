@@ -41,7 +41,11 @@ through untouched. When it does apply, the hook:
 
 1. Runs the up-to-3 most recently added/changed `@UITC###`-tagged scenarios
    (`npm run test:tag`), or `npm test` if `src/objects/`/`src/steps/` changed without
-   a new/changed scenario tag — **blocks the push if any test fails**.
+   a new/changed scenario tag — **non-blocking**: a failure is reported as a
+   clear warning (which test, the error) but never blocks the push, since
+   the suite depends on a live third-party site's login and can fail for
+   reasons unrelated to code (invalid/locked test credentials, Cloudflare,
+   network issues).
 2. Reviews the diff using the same criteria as the `test-reviewer` agent
    (`.claude/agents/test-reviewer.md`) plus leftover `TODO`/`FIXME` comments
    and this file's documented conventions — **blocks the push on a concrete
