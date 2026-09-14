@@ -26,6 +26,21 @@ request:
   the branch for the current request — keep working on it, no need to
   re-branch.
 
+## Pre-push validation
+
+Codex has no hook to enforce this automatically (Claude Code's version runs
+as a blocking `PreToolUse` agent hook — see `.claude/settings.json` and
+CLAUDE.md), so do it yourself before running `git push` whenever the push
+touches `features/`, `elements/`, `steps/`, or `playwright.config.ts`
+(check with `git diff origin/main...HEAD --name-only`):
+
+1. Run the up-to-3 most recently added/changed `@UITC###`-tagged scenarios
+   (`npm run test:tag`), or `npm test` if `elements/`/`steps/` changed
+   without a new/changed scenario tag. Don't push if any test fails.
+2. Review the diff using the same criteria as `.claude/agents/test-reviewer.md`
+   plus leftover `TODO`/`FIXME` comments and this file's documented
+   conventions. Fix concrete issues before pushing.
+
 ## Commands
 
 ```bash

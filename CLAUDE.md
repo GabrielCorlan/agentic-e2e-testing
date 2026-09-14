@@ -31,6 +31,26 @@ This mirrors the manual branch-per-feature workflow already used across this
 repo's git history; the hook makes checking it automatic instead of relying
 on remembering to run `git status` at the start of each task.
 
+## Pre-push validation (automatic)
+
+A `PreToolUse` agent hook fires on every `git push` and **can block it**.
+It's a no-op unless the push touches `features/`, `elements/`, `steps/`, or
+`playwright.config.ts` (checked via `git diff origin/main...HEAD --name-only`);
+pushes that don't touch those paths (docs-only, config-only, etc.) go
+through untouched. When it does apply, the hook:
+
+1. Runs the up-to-3 most recently added/changed `@UITC###`-tagged scenarios
+   (`npm run test:tag`), or `npm test` if `elements/`/`steps/` changed without
+   a new/changed scenario tag — **blocks the push if any test fails**.
+2. Reviews the diff using the same criteria as the `test-reviewer` agent
+   (`.claude/agents/test-reviewer.md`) plus leftover `TODO`/`FIXME` comments
+   and this file's documented conventions — **blocks the push on a concrete
+   issue** (not a style preference).
+
+Don't try to work around a block by bypassing the hook — fix the reported
+issue and push again. If the hook's verdict looks wrong, that's worth
+raising with the user rather than silently overriding it.
+
 ## Commands
 
 ```bash
