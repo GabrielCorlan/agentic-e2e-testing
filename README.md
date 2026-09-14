@@ -87,18 +87,17 @@ npm run allure:open        # open the last generated allure-report/
 
 ## CI/CD
 
-`.github/workflows/tests.yml` runs the full suite on every push to `main` and
-every pull request targeting it: install deps, install Playwright browsers,
-`npm test` (headless, since `CI` is set), then upload the HTML report and the
-raw `allure-results/` as artifacts. The test step is `continue-on-error:
-true` (see the "Known limitation" section below for why) — a test failure
-shows as a warning, not a red check, but the workflow still surfaces it (a
-`::warning::` annotation, the step's yellow triangle, and the
-`test-results`/report artifacts).
+`.github/workflows/tests.yml` runs on every push to `main` and every pull
+request targeting it, but **it does not execute the test suite** — see
+"Known limitation" below for why. It only checks out the repo and prints a
+`::notice::` disclaimer explaining that tests must be run locally instead.
 
-Add these as **repository secrets** (Settings → Secrets and variables →
-Actions) before the workflow can log in — they're the same values as your
-local `.env`:
+The steps that would install dependencies, install Playwright browsers, run
+`npm test`, and upload the HTML report / `allure-results/` are kept in the
+file, commented out, for whenever CI execution becomes viable again (e.g. a
+different runner/IP strategy). If you re-enable them, you'll also need to
+add these as **repository secrets** (Settings → Secrets and variables →
+Actions) — the same values as your local `.env`:
 
 | Secret      | Same as `.env`'s |
 | ----------- | ---------------- |
@@ -108,20 +107,21 @@ local `.env`:
 
 ### Known limitation: Cloudflare on the GitHub-hosted runner
 
-The suite tests a real third-party site, and the CI job can fail with the
-account-menu check (`nav-menu`) never appearing even though the login
-steps and the redirect to `/account` succeed. The failure page snapshot
-(printed by the "Print failure page snapshots" step, or in the
-`test-results` artifact) shows the site's Cloudflare bot-check screen
-("Performing security verification") instead of the real app — this is
-Cloudflare challenging GitHub Actions' shared runner IPs, not a bug in the
-tests or the app. It doesn't reproduce locally (a residential IP isn't
-challenged) either headed or headless, so it isn't fixable from Playwright
-config.
+The suite tests a real third-party site, and practicesoftwaretesting.com
+sits behind Cloudflare bot management, which blocks/challenges GitHub
+Actions' shared runner IPs — a page snapshot captured while investigating
+this showed Cloudflare's bot-check screen ("Performing security
+verification") instead of the real app, with the post-login account-menu
+check never finding what it expects, even though the login steps and the
+redirect to `/account` succeeded. It doesn't reproduce locally (a
+residential IP isn't challenged) either headed or headless, so it isn't
+fixable from Playwright config, and it fails essentially every time on the
+GitHub-hosted runner — not flaky, but guaranteed.
 
-Because this can happen on any push regardless of code changes, the "Run
-tests" step is non-blocking (`continue-on-error: true`) — a failure here
-doesn't fail the check, so it never blocks merging. If a run fails, open the
-job log: the "Warn if tests failed" annotation and the "Print failure page
-snapshots" step tell you whether it's this Cloudflare page (safe to ignore
-or re-run) or something else (worth investigating before merging).
+Because of that, CI execution is disabled entirely (see above) rather than
+just made non-blocking: running a guaranteed-to-fail suite on every push
+would waste CI minutes, and repeatedly attempting to log in with
+`TEST_USER` from a blocked/challenged IP risks the site's login-attempt
+rate limiting locking that account again (it happened once already, from
+the accumulated attempts across manual debugging and CI retries). Run the
+suite locally, where it works reliably (`npm test`).
