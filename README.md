@@ -37,21 +37,23 @@ for traceability, and a category tag (`@smoke`, `@regression`, ...) for grouping
 Scenario: Successful login with valid credentials
 ```
 
-### Elements & steps
+### Objects & steps
 
-Step definitions and page interactions are split into two parallel top-level
-folders, one file per HTML tag / component:
+This repo uses an object model — one class per HTML tag/component — rather
+than a classic Page Object Model. Step definitions and object classes live
+under `src/`, split into two parallel folders, one file per HTML tag /
+component:
 
-- **`elements/*.ts`** — a small class per element type (`button.ts`, `input.ts`,
+- **`src/objects/*.ts`** — a small class per element type (`button.ts`, `input.ts`,
   `link.ts`, `app-header.ts`, ...) exposing the actions you can take on it
   (`.click()`, `.fill()`, ...). These hold no Gherkin wording, only Playwright
   actions.
-- **`steps/*.steps.ts`** — the `Given`/`When`/`Then` definitions behind the
-  Gherkin sentences, named to match the element file they use (`button.steps.ts`
-  uses `elements/button.ts`, etc.).
+- **`src/steps/*.steps.ts`** — the `Given`/`When`/`Then` definitions behind the
+  Gherkin sentences, named to match the object file they use (`button.steps.ts`
+  uses `src/objects/button.ts`, etc.).
 
 A step file is only added once a scenario actually needs it — the pairing is a
-naming convention, not a requirement to pre-create every possible element.
+naming convention, not a requirement to pre-create every possible object.
 
 ## Running tests
 

@@ -1,5 +1,5 @@
 import { createBdd } from 'playwright-bdd';
-import { AppHeader } from '../elements/app-header';
+import { AppHeader } from '../objects/app-header';
 
 const { Given, Then } = createBdd();
 
