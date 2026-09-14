@@ -10,6 +10,9 @@
     "test:ui": "bddgen && playwright test --ui",
     "test:debug": "bddgen && playwright test --debug",
     "report": "playwright show-report",
+    "allure:generate": "allure generate allure-results --clean -o allure-report",
+    "allure:open": "allure open allure-report",
+    "allure:serve": "allure serve allure-results",
     "codegen": "playwright codegen"
   },
   "repository": {
@@ -28,6 +31,8 @@
     "@cucumber/cucumber": "^13.2.1",
     "@playwright/test": "^1.63.0",
     "@types/node": "^22.20.2",
+    "allure-commandline": "^2.43.0",
+    "allure-playwright": "^3.12.1",
     "playwright-bdd": "^9.2.1",
     "typescript": "^7.0.2"
   },
