@@ -1,0 +1,15 @@
+{
+  "hooks": {
+    "UserPromptSubmit": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "bash .claude/hooks/git-branch-status.sh",
+            "timeout": 10
+          }
+        ]
+      }
+    ]
+  }
+}

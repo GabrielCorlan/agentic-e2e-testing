@@ -6,6 +6,31 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 E2E test automation framework for [https://practicesoftwaretesting.com/](https://practicesoftwaretesting.com/) (a public Angular demo/e-commerce site), built with Playwright and TypeScript. All tests are Gherkin scenarios (via playwright-bdd), compiled into and run through Playwright's own test runner/config — there is no separate Cucumber runner.
 
+## Git branch workflow (check this first, every prompt)
+
+A `UserPromptSubmit` hook (`.claude/hooks/git-branch-status.sh`) injects the
+current git branch, whether the working tree is clean, and whether any other
+local branch has commits not yet merged into `origin/main` — as additional
+context on every prompt. Before starting work on a new request, read that
+injected state and act on it:
+
+- **On `main`, clean, no other branch has unmerged work**: propose exactly 2
+  branch-name options (`feat/<short-kebab-description>`, derived from the
+  request) and wait for the user to pick one (or give their own name) before
+  creating the branch and starting the actual task. Don't start editing
+  files first and branch afterward.
+- **Another local branch has commits not yet merged into `origin/main`**:
+  don't silently create yet another branch. Tell the user which branch has
+  unmerged/unpushed work and ask them to push it / open a PR / merge it
+  first, so work continues from a clean `main`.
+- **Already on a feature branch with no other unmerged branches**: that's
+  the branch for the current request (matches the pattern used throughout
+  this repo's history) — keep working on it, no need to re-branch.
+
+This mirrors the manual branch-per-feature workflow already used across this
+repo's git history; the hook makes checking it automatic instead of relying
+on remembering to run `git status` at the start of each task.
+
 ## Commands
 
 ```bash
