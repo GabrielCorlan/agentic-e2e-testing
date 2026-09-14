@@ -29,11 +29,11 @@ All tests are written as Gherkin scenarios in `features/*.feature`.
 Playwright tests, so they run with the same runner, fixtures, and HTML report
 as any other Playwright suite.
 
-Every scenario carries two tags: a unique test-case ID (`@UITC001`, `@UITC002`, ...)
+Every scenario carries two tags: a unique test-case ID (`@UI-TC-001`, `@UI-TC-002`, ...)
 for traceability, and a category tag (`@smoke`, `@regression`, ...) for grouping:
 
 ```gherkin
-@UITC001 @smoke
+@UI-TC-001 @smoke
 Scenario: Successful login with valid credentials
 ```
 
@@ -62,7 +62,7 @@ automatically when `CI` is set (see [CI/CD](#cicd) below).
 
 ```bash
 npm test                        # regenerate + run all scenarios, all browsers
-npm run test:tag -- "@UITC001"  # run scenario(s) matching a tag
+npm run test:tag -- "@UI-TC-001"  # run scenario(s) matching a tag
 npm run test:tag -- "@smoke"    # run all scenarios in a category
 npm run test:ui                  # interactive UI mode
 npm run test:debug               # step-through debug mode

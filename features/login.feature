@@ -3,7 +3,7 @@ Feature: Login
   I want to log in with my credentials
   So that I can access my account
 
-  @UITC001 @smoke
+  @UI-TC-001 @smoke
   Scenario: Successful login with valid credentials
     Given I am on the login page
     When I fill in the "email" field with my email
@@ -12,7 +12,7 @@ Feature: Login
     Then I should be redirected to my account page
     And I should see the account menu for the logged-in user
 
-  @UITC002 @regression
+  @UI-TC-002 @regression
   Scenario: Failed login with invalid credentials
     Given I am on the login page
     When I fill in the "email" field with "nonexistent-user@example.com"
