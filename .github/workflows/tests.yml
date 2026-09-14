@@ -14,6 +14,21 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
+      - name: Verify required secrets are set
+        run: |
+          missing=()
+          [ -z "$BASE_URL" ] && missing+=("BASE_URL")
+          [ -z "$TEST_USER" ] && missing+=("TEST_USER")
+          [ -z "$TEST_PASS" ] && missing+=("TEST_PASS")
+          if [ ${#missing[@]} -gt 0 ]; then
+            echo "::error::Missing repository secret(s): ${missing[*]}. Add them under Settings > Secrets and variables > Actions."
+            exit 1
+          fi
+        env:
+          BASE_URL: ${{ secrets.BASE_URL }}
+          TEST_USER: ${{ secrets.TEST_USER }}
+          TEST_PASS: ${{ secrets.TEST_PASS }}
+
       - uses: actions/setup-node@v4
         with:
           node-version: 20
