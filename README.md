@@ -101,3 +101,17 @@ local `.env`:
 | `BASE_URL`  | `BASE_URL`       |
 | `TEST_USER` | `TEST_USER`      |
 | `TEST_PASS` | `TEST_PASS`      |
+
+### Known limitation: Cloudflare on the GitHub-hosted runner
+
+The suite tests a real third-party site, and the CI job can fail with the
+account-menu check (`nav-menu`) never appearing even though the login
+steps and the redirect to `/account` succeed. The failure page snapshot
+(printed by the "Print failure page snapshots" step, or in the
+`test-results` artifact) shows the site's Cloudflare bot-check screen
+("Performing security verification") instead of the real app — this is
+Cloudflare challenging GitHub Actions' shared runner IPs, not a bug in the
+tests or the app. It doesn't reproduce locally (a residential IP isn't
+challenged) either headed or headless, so it isn't fixable from Playwright
+config. If a run fails this way, re-run the job — a later run may land on a
+different, unflagged runner IP.
