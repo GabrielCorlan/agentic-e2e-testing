@@ -1,6 +1,6 @@
 import { createBdd } from 'playwright-bdd';
 import { expect } from '@playwright/test';
-import { AppHeader } from '../objects/app-header';
+import { AppHeader } from '../../objects/components/app-header';
 
 const { Given, Then } = createBdd();
 

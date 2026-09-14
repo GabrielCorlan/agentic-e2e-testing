@@ -17,11 +17,13 @@ No secrets are included here. `.env` (gitignored) holds the real
 - One scenario exists: `features/login.feature` (`@UI-TC-001 @smoke`), login
   with valid credentials, asserting redirect to `/account` and that the
   header's user menu becomes visible.
-- Object-model layer under `src/`: `src/objects/*.ts` (one class per
-  HTML tag/component — `Button`, `Input`, `Link`, `AppHeader`) and
-  `src/steps/*.steps.ts` (matching step definitions, same base filename).
-  Generic action steps (click/fill) take the `data-test` id as a Cucumber
-  Expression parameter rather than hardcoding it.
+- Object-model layer under `src/`, split into `elements/` (single-tag
+  wrappers — `Alert`, `Button`, `Input`, `Link`) and `components/`
+  (composites built from multiple elements — `AppHeader`) subfolders
+  mirrored between `src/objects/` and `src/steps/*.steps.ts` (matching step
+  definitions, same base filename). Generic action steps (click/fill) take
+  the `data-test` id as a Cucumber Expression parameter rather than
+  hardcoding it.
 - Reporting: built-in Playwright HTML report + `allure-playwright` (raw
   results in `allure-results/`, viewable via `npm run allure:serve`/`allure:generate`
   — needs a local Java runtime).

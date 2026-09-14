@@ -7,12 +7,17 @@ description: Use when adding a new e2e test (a Gherkin/BDD scenario) to this rep
 
 All tests in this repo are Gherkin scenarios — there are no plain Playwright specs. Add a scenario to a `features/*.feature` file (new or existing). Reuse an existing step's exact text instead of writing a near-duplicate.
 
-This repo uses an object model (one class per HTML tag/component, not one class per page) rather than a classic Page Object Model. Step definitions and object classes live under `src/`, split into two parallel folders, one file per HTML tag/component, sharing a name:
+This repo uses an object model (one class per HTML tag/component, not one class per page) rather than a classic Page Object Model. Step definitions and object classes live under `src/`, split into two parallel folders, each further split into an `elements/` and a `components/` subfolder that mirror each other, one file per HTML tag/component, sharing a name:
 
-- **`src/objects/<name>.ts`** — a class wrapping the Playwright actions available on that element (`.click()`, `.fill()`, ...), taking a `Locator` (or `Page`, for a whole component like `app-header`) in its constructor. No Gherkin wording here.
-- **`src/steps/<name>.steps.ts`** — the `Given`/`When`/`Then` definitions that use the matching object file.
+- **`src/objects/elements/<name>.ts`** / **`src/objects/components/<name>.ts`** — a class wrapping the Playwright actions available on that element/component (`.click()`, `.fill()`, ...). No Gherkin wording here.
+- **`src/steps/elements/<name>.steps.ts`** / **`src/steps/components/<name>.steps.ts`** — the `Given`/`When`/`Then` definitions that use the matching object file, in the same subfolder as its object.
 
-When a scenario needs a new interaction: check whether a `src/objects/*.ts` file for that tag/component already exists and reuse it; only add a new object file when the tag/component genuinely isn't covered yet. Don't create an object or step file with no scenario using it — the naming pairing is a convention to follow once there's a real step, not a checklist of files to pre-create. A step that isn't really an object action (e.g. a first `Given` that just navigates) doesn't have to force-fit the pairing — put it wherever it's most related.
+**Deciding `elements/` vs. `components/`** — ask whether the class wraps exactly one HTML tag or composes several:
+- `elements/` — a single HTML tag/primitive, one `Locator`, no sub-elements of its own (`Alert`, `Button`, `Input`, `Link`). Constructor takes a `Locator`.
+- `components/` — a reusable composite built from multiple elements/tags together (`AppHeader`, which composes `Link` and a user-menu `Locator`). Constructor typically takes a `Page` (or a root `Locator`) and instantiates its child elements internally.
+- If an `elements/` class grows to compose other elements, move it to `components/` rather than letting it accumulate inside `elements/`.
+
+When a scenario needs a new interaction: check whether an `elements/*.ts` or `components/*.ts` file for that tag/component already exists (in the right subfolder per the rule above) and reuse it; only add a new object file when the tag/component genuinely isn't covered yet. Don't create an object or step file with no scenario using it — the naming pairing is a convention to follow once there's a real step, not a checklist of files to pre-create. A step that isn't really an object action (e.g. a first `Given` that just navigates) doesn't have to force-fit the pairing — put it wherever it's most related.
 
 ## Conventions to follow
 
@@ -20,7 +25,7 @@ When a scenario needs a new interaction: check whether a `src/objects/*.ts` file
 - **Generic element steps take the `data-test` id as a Cucumber Expression parameter**, not hardcoded, so one step definition covers any element of that kind: `When('I click the {string} button', async ({ page }, dataTestId: string) => ...)` matches `And I click the "login-submit" button` in a `.feature` file. Follow this for any new generic action step (click, fill, ...); it doesn't apply to a step that wraps a specific composite/domain action (e.g. `AppHeader`'s sign-in navigation), where the target isn't meant to vary.
 - **Base URL**: `playwright.config.ts` sets `baseURL` from `.env`'s `BASE_URL`. Use `page.goto('/relative/path')`, never a hardcoded domain.
 - **Credentials**: `.env` (gitignored) is already loaded into `process.env` by `playwright.config.ts` before tests run. Reference `process.env.TEST_USER` / `process.env.TEST_PASS` directly — no per-file dotenv setup needed. Never hardcode credentials in a test.
-- **BDD step definitions**: register steps with `createBdd()` from `playwright-bdd` (see `src/steps/button.steps.ts`), not `@cucumber/cucumber` directly — this keeps them on Playwright's own runner/fixtures instead of Cucumber's.
+- **BDD step definitions**: register steps with `createBdd()` from `playwright-bdd` (see `src/steps/elements/button.steps.ts`), not `@cucumber/cucumber` directly — this keeps them on Playwright's own runner/fixtures instead of Cucumber's.
 - **Tags**: every scenario gets two tags: a unique, sequential ID (`@UI-TC-001`, `@UI-TC-002`, ...; check existing `features/*.feature` files for the highest one in use) and a category tag (`@smoke`, `@regression`, ...). Filter with `npm run test:tag -- "@UI-TC-001"` or `-- "@smoke"`.
 
 ## General good practices (apply anywhere, not just this repo)

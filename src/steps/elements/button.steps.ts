@@ -1,5 +1,5 @@
 import { createBdd } from 'playwright-bdd';
-import { Button } from '../objects/button';
+import { Button } from '../../objects/elements/button';
 
 const { When } = createBdd();
 
