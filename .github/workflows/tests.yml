@@ -48,6 +48,15 @@ jobs:
           TEST_USER: ${{ secrets.TEST_USER }}
           TEST_PASS: ${{ secrets.TEST_PASS }}
 
+      - name: Print failure page snapshots
+        if: ${{ failure() }}
+        run: |
+          for f in $(find test-results -name "error-context.md" 2>/dev/null); do
+            echo "=== $f ==="
+            cat "$f"
+            echo
+          done
+
       - name: Upload HTML report
         if: ${{ !cancelled() }}
         uses: actions/upload-artifact@v4
@@ -62,4 +71,12 @@ jobs:
         with:
           name: allure-results
           path: allure-results/
+          retention-days: 14
+
+      - name: Upload test-results (traces/snapshots)
+        if: ${{ failure() }}
+        uses: actions/upload-artifact@v4
+        with:
+          name: test-results
+          path: test-results/
           retention-days: 14
