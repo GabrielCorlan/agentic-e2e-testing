@@ -50,7 +50,7 @@ It's a no-op unless the push touches `features/`, `src/objects/`, `src/steps/`, 
 pushes that don't touch those paths (docs-only, config-only, etc.) go
 through untouched. When it does apply, the hook:
 
-1. Runs the up-to-3 most recently added/changed `@UITC###`-tagged scenarios
+1. Runs the up-to-3 most recently added/changed `@UI-TC-###`-tagged scenarios
    (`npm run test:tag`), or `npm test` if `src/objects/`/`src/steps/` changed without
    a new/changed scenario tag — **non-blocking**: a failure is reported as a
    clear warning (which test, the error) but never blocks the push, since
@@ -74,7 +74,7 @@ cp .env.example .env                                 # then fill in real BASE_UR
 
 npm test                              # regenerate + run all scenarios, all browser projects
 npx playwright test --project=chromium               # run only one browser project (chromium|firefox|webkit)
-npm run test:tag -- "@UITC001"        # run scenario(s) matching a tag (ID or category, e.g. "@smoke")
+npm run test:tag -- "@UI-TC-001"        # run scenario(s) matching a tag (ID or category, e.g. "@smoke")
 npm run test:ui                        # interactive UI mode
 npm run test:debug                     # Playwright inspector/debug mode
 npm run report                          # open the last HTML report
@@ -90,7 +90,7 @@ npx tsc --noEmit             # type-check without emitting
 - Reporting is dual: the built-in Playwright HTML reporter, plus `allure-playwright` writing raw results to `allure-results/`. Turning those into a viewable Allure report (`npm run allure:generate`/`allure:serve`) needs a Java runtime — the `allure` CLI (from `allure-commandline`) is Java-based.
 - **`features/*.feature`** — Gherkin scenarios, compiled by `playwright-bdd`'s `bddgen` CLI into runnable specs under the gitignored `.features-gen/` directory. `bddgen` must be re-run whenever a `.feature`, `src/objects/*.ts`, or `src/steps/*.steps.ts` file changes; every `test:*` script does this via `bddgen &&` (or, for plain `npm test`, the `pretest` hook).
 - **`src/objects/*.ts`** + **`src/steps/*.steps.ts`** — an object-model split (one class per HTML tag/component, not one per page — this repo deliberately doesn't use a classic Page Object Model), one file per HTML tag/component, sharing a name: `src/objects/button.ts` holds a `Button` class wrapping actions (`.click()`, ...) on a `Locator`; `src/steps/button.steps.ts` registers the `When`/`Then` step(s) that use it via `createBdd()` from `playwright-bdd` (not `@cucumber/cucumber` directly — this keeps steps on Playwright's own runner/fixtures rather than Cucumber's). Only create a step/object file pair when a scenario actually needs it; a step that isn't tied to one specific element type (e.g. a plain navigation `Given`) can live wherever it's most related, it doesn't have to force-fit the pairing.
-- Every scenario carries two tags: a unique sequential ID (`@UITC001`, `@UITC002`, ...) and a category (`@smoke`, `@regression`, ...), filterable via `npm run test:tag`.
+- Every scenario carries two tags: a unique sequential ID (`@UI-TC-001`, `@UI-TC-002`, ...) and a category (`@smoke`, `@regression`, ...), filterable via `npm run test:tag`.
 - Objects select on the site's `data-test="..."` attributes (e.g. `[data-test="email"]`, `[data-test="login-submit"]`, `[data-test="nav-menu"]`) rather than text or CSS classes — prefer this pattern for new objects since the site is an Angular app where structural classes are unstable.
 - Generic element steps take the `data-test` id as a Cucumber Expression parameter instead of hardcoding it, so a scenario names the target directly: `When('I click the {string} button', ...)` matches `And I click the "login-submit" button` (see `src/steps/button.steps.ts`). This doesn't apply to steps wrapping a composite/domain action with a fixed target (e.g. `AppHeader`'s sign-in navigation).
 - `.env` holds real test credentials and is gitignored; `.env.example` documents the expected keys and is committed. `BASE_URL` sets Playwright's `baseURL`, so steps should `page.goto('/relative/path')` rather than hardcoding the domain.

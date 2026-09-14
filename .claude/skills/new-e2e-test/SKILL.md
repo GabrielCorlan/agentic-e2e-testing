@@ -21,7 +21,7 @@ When a scenario needs a new interaction: check whether a `src/objects/*.ts` file
 - **Base URL**: `playwright.config.ts` sets `baseURL` from `.env`'s `BASE_URL`. Use `page.goto('/relative/path')`, never a hardcoded domain.
 - **Credentials**: `.env` (gitignored) is already loaded into `process.env` by `playwright.config.ts` before tests run. Reference `process.env.TEST_USER` / `process.env.TEST_PASS` directly — no per-file dotenv setup needed. Never hardcode credentials in a test.
 - **BDD step definitions**: register steps with `createBdd()` from `playwright-bdd` (see `src/steps/button.steps.ts`), not `@cucumber/cucumber` directly — this keeps them on Playwright's own runner/fixtures instead of Cucumber's.
-- **Tags**: every scenario gets two tags: a unique, sequential ID (`@UITC001`, `@UITC002`, ...; check existing `features/*.feature` files for the highest one in use) and a category tag (`@smoke`, `@regression`, ...). Filter with `npm run test:tag -- "@UITC001"` or `-- "@smoke"`.
+- **Tags**: every scenario gets two tags: a unique, sequential ID (`@UI-TC-001`, `@UI-TC-002`, ...; check existing `features/*.feature` files for the highest one in use) and a category tag (`@smoke`, `@regression`, ...). Filter with `npm run test:tag -- "@UI-TC-001"` or `-- "@smoke"`.
 
 ## General good practices (apply anywhere, not just this repo)
 

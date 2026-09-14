@@ -10,3 +10,7 @@ When('I fill in the {string} field with my email', async ({ page }, dataTestId: 
 When('I fill in the {string} field with my password', async ({ page }, dataTestId: string) => {
   await new Input(page.locator(`[data-test="${dataTestId}"]`)).fill(process.env.TEST_PASS!);
 });
+
+When('I fill in the {string} field with {string}', async ({ page }, dataTestId: string, value: string) => {
+  await new Input(page.locator(`[data-test="${dataTestId}"]`)).fill(value);
+});

@@ -14,7 +14,7 @@ No secrets are included here. `.env` (gitignored) holds the real
 - E2E framework: Playwright + TypeScript, all tests as Gherkin scenarios via
   `playwright-bdd` (no `@cucumber/cucumber` runner — steps run on Playwright's
   own test runner).
-- One scenario exists: `features/login.feature` (`@UITC001 @smoke`), login
+- One scenario exists: `features/login.feature` (`@UI-TC-001 @smoke`), login
   with valid credentials, asserting redirect to `/account` and that the
   header's user menu becomes visible.
 - Object-model layer under `src/`: `src/objects/*.ts` (one class per
@@ -34,7 +34,7 @@ No secrets are included here. `.env` (gitignored) holds the real
     prompt, driving a branch-per-feature workflow.
   - `PreToolUse` agent hook fires on `git push`, scoped to pushes touching
     `features/`, `src/objects/`, `src/steps/`, or `playwright.config.ts`: runs
-    up to 3 recently-changed `@UITC###` tests (or `npm test` if only
+    up to 3 recently-changed `@UI-TC-###` tests (or `npm test` if only
     objects/steps changed) as a **non-blocking** check (reports failures as a
     warning only), and reviews the diff against `.claude/agents/test-reviewer.md`'s
     criteria plus TODO/FIXME/convention checks as a **blocking** check.
@@ -47,7 +47,7 @@ No secrets are included here. `.env` (gitignored) holds the real
 |---|---|
 | `playwright-bdd` instead of raw `@cucumber/cucumber` | Keeps Gherkin tests on Playwright's own runner/fixtures/reporter instead of running a separate Cucumber process. |
 | Object model (`src/objects/`) instead of classic Page Object Model | User's explicit choice — one class per HTML tag/component, reusable across pages, instead of one class per page. |
-| Every scenario tagged `@UITCnnn` + a category (`@smoke`, ...) | Traceability (stable ID) plus grouping/filtering (`npm run test:tag`). |
+| Every scenario tagged `@UI-TC-nnn` + a category (`@smoke`, ...) | Traceability (stable ID) plus grouping/filtering (`npm run test:tag`). |
 | Generic steps take `data-test` as a `{string}` parameter | One step definition (e.g. `I click the "..." button`) covers any element of that kind, instead of one hardcoded step per target. |
 | `headless` is `false` locally, `true` on `CI` | Runs visibly for local development; CI runners have no display. |
 | CI test execution fully disabled (not just non-blocking) | practicesoftwaretesting.com is behind Cloudflare bot management, which blocks/challenges GitHub Actions' shared runner IPs — confirmed via a real CI run's page snapshot showing Cloudflare's "Performing security verification" screen instead of the app. Running anyway wastes CI minutes on a guaranteed failure **and** risks re-locking the test account (see below) via repeated failed logins from a challenged IP. |
@@ -111,7 +111,7 @@ skill's conventions) rather than further environment debugging.
 | `CLAUDE.md` | Stable project rules: stack, architecture, conventions, commands — read this first. |
 | `README.md` | Human-facing setup/usage, including the CI "Known limitation" writeup. |
 | `.env.example` | The three required env vars (`BASE_URL`, `TEST_USER`, `TEST_PASS`) — no real values. |
-| `features/login.feature` | The one existing scenario, tagged `@UITC001 @smoke`. |
+| `features/login.feature` | The one existing scenario, tagged `@UI-TC-001 @smoke`. |
 | `src/objects/`, `src/steps/` | Object-model classes and their step definitions. |
 | `.claude/settings.json` | Both hooks' exact configuration (paths, permissions, prompts). |
 | `.claude/agents/test-reviewer.md` | Code-quality criteria the pre-push hook and the `test-reviewer` subagent both use. |
