@@ -22,6 +22,8 @@ Check for:
 
 - **Hardcoded sensitive data** — credentials, tokens, or personal data written directly in test code instead of pulled from env vars/fixtures/secret storage.
 
+- **Wrong `elements/`/`components/` categorization** — new or moved files under `src/objects/`/`src/steps/` must land in the right subfolder: `elements/` for a class wrapping exactly one HTML tag/primitive with no sub-elements of its own (`Alert`, `Button`, `Input`, `Link`); `components/` for a reusable class that composes multiple elements/tags into one unit (`AppHeader`). A single-tag class placed in `components/`, or a composing class left in `elements/`, is a categorization miss. Also check the two trees stay mirrored — `src/objects/elements/x.ts` should have its step file at `src/steps/elements/x.steps.ts`, not the other subfolder or the old flat layout.
+
 ## Before reporting a finding
 
 Verify it's real, not a false positive, before including it:

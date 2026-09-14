@@ -1,5 +1,5 @@
 import { Locator, Page, expect } from '@playwright/test';
-import { Link } from './link';
+import { Link } from '../elements/link';
 
 /** Wraps actions available on the `<app-header>` component. */
 export class AppHeader {

@@ -1,5 +1,5 @@
 import { createBdd } from 'playwright-bdd';
-import { Alert } from '../objects/alert';
+import { Alert } from '../../objects/elements/alert';
 
 const { Then } = createBdd();
 

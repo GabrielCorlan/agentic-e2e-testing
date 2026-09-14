@@ -41,16 +41,21 @@ Scenario: Successful login with valid credentials
 
 This repo uses an object model — one class per HTML tag/component — rather
 than a classic Page Object Model. Step definitions and object classes live
-under `src/`, split into two parallel folders, one file per HTML tag /
-component:
+under `src/`, split into two parallel folders, each further split into an
+`elements/` and a `components/` subfolder that mirror each other, one file
+per HTML tag/component:
 
-- **`src/objects/*.ts`** — a small class per element type (`button.ts`, `input.ts`,
-  `link.ts`, `app-header.ts`, ...) exposing the actions you can take on it
-  (`.click()`, `.fill()`, ...). These hold no Gherkin wording, only Playwright
-  actions.
-- **`src/steps/*.steps.ts`** — the `Given`/`When`/`Then` definitions behind the
-  Gherkin sentences, named to match the object file they use (`button.steps.ts`
-  uses `src/objects/button.ts`, etc.).
+- **`src/objects/elements/*.ts`** — a small class per single HTML tag
+  (`alert.ts`, `button.ts`, `input.ts`, `link.ts`, ...) exposing the actions
+  you can take on it (`.click()`, `.fill()`, ...). No sub-elements of its
+  own, no Gherkin wording.
+- **`src/objects/components/*.ts`** — a class per larger reusable composite
+  built from multiple elements/tags (`app-header.ts`, which composes `Link`
+  and a user-menu locator).
+- **`src/steps/elements/*.steps.ts`** / **`src/steps/components/*.steps.ts`**
+  — the `Given`/`When`/`Then` definitions behind the Gherkin sentences,
+  named to match the object file they use, in the same subfolder
+  (`elements/button.steps.ts` uses `src/objects/elements/button.ts`, etc.).
 
 A step file is only added once a scenario actually needs it — the pairing is a
 naming convention, not a requirement to pre-create every possible object.
