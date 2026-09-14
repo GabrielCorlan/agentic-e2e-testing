@@ -70,43 +70,39 @@ No secrets are included here. `.env` (gitignored) holds the real
   through while the test step failed, consistent with the new non-blocking
   policy). Its exact `systemMessage`/warning text wasn't captured verbatim in
   this session's transcript, only that the push succeeded.
-- Manual login attempts against the live site with the current `.env`
-  credentials return "Invalid email or password" (checked via a standalone
-  Playwright script, twice, on different days).
+- `npm test` (real login against the live site, current `.env` credentials):
+  **3/3 passed** (chromium, firefox, webkit) — confirmed 2026-09-15, after the
+  credentials were fixed (see "Open issues" — this was previously failing
+  with "Invalid email or password" as of the last check).
 
 **Not verified / assumed:**
-- Whether `TEST_USER`/`TEST_PASS` in `.env` are simply mistyped, or the
-  account needs email verification, or something else — not investigated
-  beyond confirming the site rejects them. **This is the main open issue.**
 - Whether the pre-push hook's code-quality check (step 2, still blocking)
   has ever actually triggered a block on a real issue — only the test-check
   block/unblock transition was observed directly.
-- Whether CI would pass today if Cloudflare weren't a factor (the app/test
-  code itself hasn't been proven against a non-challenged IP in this
-  session — local runs get past Cloudflare but currently fail at login for
-  the credential reason above).
+- Whether CI would pass today if Cloudflare weren't a factor — not proven
+  against a GitHub Actions runner IP specifically, only inferred from local
+  runs (which use a different, non-challenged IP) passing.
 
 ## Open issues
 
-1. **`.env`'s `TEST_USER`/`TEST_PASS` are rejected by the live site**
-   ("Invalid email or password"). Blocks getting a real green local test run
-   until fixed. Do **not** just retry login repeatedly to debug this — that's
-   exactly the pattern that locked the previous test account.
-2. Many local/remote feature branches from earlier work are still present
+1. Many local/remote feature branches from earlier work are still present
    after merging (e.g. `feat/allure-report`, `feat/ci-github-actions`, ...) —
    harmless clutter, not cleaned up as part of this handoff (out of scope: no
    implementation changes were made).
-3. CI executing the real suite again depends on resolving the Cloudflare/IP
+2. CI executing the real suite again depends on resolving the Cloudflare/IP
    problem (self-hosted runner, different browser-testing infra, or
    accepting it stays local-only) — no action planned unless raised again
    (see `CLAUDE.md`'s "Known CI limitation").
 
+_(Resolved: `.env`'s `TEST_USER`/`TEST_PASS` were previously rejected by the
+live site — fixed and reconfirmed with a passing `npm test` run, see above.)_
+
 ## Recommended next step
 
-Fix the `TEST_USER`/`TEST_PASS` credentials in `.env` (verify the account
-via its registration email, or re-check for a typo), then run `npm test`
-locally once to confirm a real green run end-to-end post-restructure. That's
-the one thing this session could not confirm.
+With credentials confirmed working and only one scenario in the suite,
+the next natural step is adding more coverage (new `.feature` scenarios +
+matching `src/objects/`/`src/steps/` files, following the `new-e2e-test`
+skill's conventions) rather than further environment debugging.
 
 ## Relevant files for continuation
 
