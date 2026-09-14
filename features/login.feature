@@ -20,3 +20,11 @@ Feature: Login
     And I click the "login-submit" button
     Then I should see the "login-error" alert with message "Invalid email or password"
     And I should remain on the login page
+
+  @UI-TC-003 @regression
+  Scenario: Failed login with an empty password
+    Given I am on the login page
+    When I fill in the "email" field with my email
+    And I click the "login-submit" button
+    Then I should see the "password-error" alert with message "Password is required"
+    And I should remain on the login page
