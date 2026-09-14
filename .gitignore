@@ -12,3 +12,6 @@ node_modules/
 
 # playwright-bdd generated test files
 /.features-gen/
+
+# graphify skill output/cache
+/graphify-out/
