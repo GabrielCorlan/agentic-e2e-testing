@@ -1,4 +1,14 @@
 {
+  "permissions": {
+    "allow": [
+      "Bash(git diff origin/main*)",
+      "Bash(git log*)",
+      "Bash(npm test)",
+      "Bash(npm run test:tag*)",
+      "Bash(npx bddgen*)",
+      "Bash(npx tsc*)"
+    ]
+  },
   "hooks": {
     "UserPromptSubmit": [
       {
