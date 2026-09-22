@@ -1,0 +1,15 @@
+{
+  "hooks": {
+    "UserPromptSubmit": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "bash '/Users/gabi/agentic-e2e-framework/agentic-e2e-testing/.codex/hooks/git-branch-status.sh'",
+            "timeout": 10
+          }
+        ]
+      }
+    ]
+  }
+}
