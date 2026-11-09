@@ -16,6 +16,7 @@ E2E test automation framework for [https://practicesoftwaretesting.com/](https:/
 | `src/steps/elements/` | Step definitions matching `src/objects/elements/` |
 | `src/steps/components/` | Step definitions matching `src/objects/components/` |
 | `.claude/` | Claude Code hooks, agents, skills for this repo |
+| `.codex/`, `.agents/skills/` | Codex CLI equivalents (hooks, agents, MCP config / skills) — keep in sync with `.claude/` |
 | `.github/workflows/` | CI (currently disabled — see Architecture below) |
 | `docs/` | Session handoff notes (`docs/handoff.md`) — not stable rules, see that file for current state |
 
