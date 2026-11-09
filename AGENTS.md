@@ -1,17 +1,34 @@
 # AGENTS.md
 
-This file provides guidance to Codex (Codex.ai/code) when working with code in this repository.
+This file provides guidance to Codex CLI when working with code in this repository.
 
 ## Overview
 
 E2E test automation framework for [https://practicesoftwaretesting.com/](https://practicesoftwaretesting.com/) (a public Angular demo/e-commerce site), built with Playwright and TypeScript. All tests are Gherkin scenarios (via playwright-bdd), compiled into and run through Playwright's own test runner/config — there is no separate Cucumber runner.
 
+### Directory map
+
+| Path | Holds |
+|---|---|
+| `features/` | Gherkin `.feature` files (the scenarios) |
+| `src/objects/elements/` | One class per single HTML tag (`Alert`, `Button`, `Input`, `Link`, ...) |
+| `src/objects/components/` | One class per larger reusable composite component built from multiple elements (`AppHeader`, ...) |
+| `src/steps/elements/` | Step definitions matching `src/objects/elements/` |
+| `src/steps/components/` | Step definitions matching `src/objects/components/` |
+| `.claude/` | Claude Code hooks, agents, skills for this repo |
+| `.codex/`, `.agents/skills/` | Codex CLI equivalents (hooks, agents, MCP config / skills) — keep in sync with `.claude/` |
+| `.github/workflows/` | CI (currently disabled — see Architecture below) |
+| `docs/` | Session handoff notes (`docs/handoff.md`) — not stable rules, see that file for current state |
+
 ## Git branch workflow (check this first, every prompt)
 
-Codex has no built-in hook for this (Claude Code uses a `UserPromptSubmit`
-hook — see `.claude/hooks/git-branch-status.sh` and `CLAUDE.md`), so run
-`git status` and `git branch` yourself before starting work on a new
-request:
+A `UserPromptSubmit` hook (`.codex/hooks.json` →
+`.codex/hooks/git-branch-status.sh`, a copy of the Claude Code one) injects
+the current git branch, whether the working tree is clean, and whether any
+other local branch has commits not yet merged into `origin/main` — as
+additional context on every prompt. If that context is missing (hooks
+disabled or not trusted), run `git status` and `git branch` yourself. Before
+starting work on a new request, act on that state:
 
 - **On `main`, clean, no other branch has unmerged work**: propose exactly 2
   branch-name options (`feat/<short-kebab-description>`, derived from the
@@ -40,7 +57,7 @@ touches `features/`, `src/objects/`, `src/steps/`, or `playwright.config.ts`
    the push — the suite depends on a live third-party site's login, which
    can fail for reasons unrelated to code (invalid/locked test credentials,
    Cloudflare, network issues) — but do mention it to the user.
-2. Review the diff using the same criteria as `.claude/agents/test-reviewer.md`
+2. Review the diff using the same criteria as the `test-reviewer` agent (`.codex/agents/test-reviewer.toml`)
    plus leftover `TODO`/`FIXME` comments and this file's documented
    conventions. Fix concrete issues before pushing.
 
